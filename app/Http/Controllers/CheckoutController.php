@@ -37,7 +37,7 @@ class CheckoutController extends Controller
         $data['user_id'] = Auth::id();
         $data['camp_id'] = $camp->id;
 
-        $user = Auth()::user();
+        $user = Auth::user();
         $user->email = $data['email'];
         $user->name = $data['name'];
         $user->occupation = $data['occupation'];
@@ -45,7 +45,7 @@ class CheckoutController extends Controller
 
         $checkout = Checkouts::create($data);
 
-        return $data;
+        return redirect(route('checkout-success'));
     }
 
     /**

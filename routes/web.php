@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +27,16 @@ Route::get('login', function() {
 
 Route::get('sign-in-google',[UserController::class, 'google']) -> name ('google-login');
 Route::get('auth/google/callback',[UserController::class, 'callbackAuth']) -> name ('google-callback');
-Route::post('logout', [UserController::class, 'logout']) -> name('google-logout');
+Route::get('logout', [UserController::class, 'logout']) -> name('google-logout');
 
 
-Route::post('checkout/{camp}', [CheckoutController::class, 'store']) -> name ('checkout-store');
+Route::middleware(['auth']) -> group(function(){
+    Route::post('checkout/{camp}', [CheckoutController::class, 'store']) -> name ('checkout-store');
 Route::get('checkout/success', [CheckoutController::class, 'success']) -> name ('checkout-success');
 Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create']) -> name ('checkout-create');
 
+Route::get('dashboard', [HomeController::class, 'dashboard']) -> name('dashboard');
+});
 
+
+require __DIR__.'/auth.php';
